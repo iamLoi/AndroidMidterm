@@ -11,28 +11,32 @@ import com.example.androidmidterm.R
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONArray
 import org.json.JSONObject
+import android.widget.TextView;
+import com.android.volley.toolbox.StringRequest
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+//        val textView = findViewById<TextView>(R.id.eventTitle)
 
         // Volley uses internet permissions which needs to be enabled in the AndroidManifest.xml
         val queue = Volley.newRequestQueue(this)
 
-        // OU Calendar url
-        // TODO: change this to your url after you have endpoints
-        val url = "https://calendar.ou.edu/live/json/events"
+        val url = "https://random-number-generator-251217.appspot.com/"
 
-        // OU calendar returns a Json Array, if your website returns a Json Object then use JsonObjectRequest
-        val stringRequest = JsonArrayRequest(Request.Method.GET, url, null,
-            Response.Listener<JSONArray> { response ->
-                val event = response[0] as JSONObject
-                // eventTitle is the id for the textbox in activity_main.xml
-                eventTitle.text = "Event title is : ${event.getString("title")}"
+
+        val stringRequest = StringRequest(Request.Method.GET, url,
+            Response.Listener<String> { response ->
+                eventTitle.setText(response.toString())
             },
-            Response.ErrorListener { eventTitle.text = "That didn't work" })
+//            Response.ErrorListener { eventTitle.text = (0..1000001).random().toString()
+                Response.ErrorListener { eventTitle.text = "That didn't work!"
+
+                }
+        )
+
 
         // button is the id for the button in activity_main.xml
         button.setOnClickListener {
